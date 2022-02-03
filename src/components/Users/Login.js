@@ -2,18 +2,15 @@ import * as actions from "modules";
 import { useState } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
-
-function mapStateToProps(state) {
-  return { token: state.token };
-}
+import { useNavigate } from "react-router-dom";
 
 function mapDispatchToProps(dispatch) {
   return { onSetToken: (token) => dispatch(actions.setToken(token)) };
 }
 
 function Login(props) {
-  console.log(props);
-
+  const onSetToken = props.onSetToken;
+  const navigate = useNavigate();
   const [loginInfo, setLoginInfo] = useState({});
   const inputs = [
     { type: "text", placeholder: "insert your email", label: "email" },
@@ -31,8 +28,18 @@ function Login(props) {
 
     axios
       .post("https://reqres.in/api/login", { ...loginInfo })
-      .then((resp) => console.log(resp))
-      .catch((err) => console.error(err));
+      .then((resp) => {
+        alert("Login Success!");
+
+        onSetToken(resp.data.token);
+        navigate("/");
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Login Error!");
+
+        for (let i of document.querySelectorAll("input")) i.value = "";
+      });
   }
 
   return (
@@ -56,4 +63,4 @@ function Login(props) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
