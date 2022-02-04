@@ -1,0 +1,9 @@
+#block {
+  position: absolute;
+  width: 100%;
+  background: #00000047;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: none;
+}
