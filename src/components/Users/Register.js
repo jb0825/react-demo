@@ -1,18 +1,27 @@
 import * as config from "config";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Register() {
+  const token = useSelector(state => state.user.token);
+  const navigate = useNavigate();
   const [registerInfo, setRegisterInfo] = useState({
     email: "eve.holt@reqres.in",
     password: "pistol",
   });
-  const navigate = useNavigate();
   const inputs = [
     { type: "text", placeholder: "insert your email", name: "email" },
     { type: "password", placeholder: "insert your password", name: "password" },
   ];
+
+  useEffect(() => {
+    if (token) {
+      alert("aleady login");
+      navigate("/");
+    }
+  });
 
   function handleChange(type, value) {
     const changed = registerInfo;

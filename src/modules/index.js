@@ -1,35 +1,25 @@
-import { combineReducers } from "@reduxjs/toolkit";
-import { createAction, handleActions } from "redux-actions";
+import { combineReducers, createSlice } from "@reduxjs/toolkit";
 
-const SET_TOKEN = "/users/setToken";
-const SET_USERS = "/users/setUsers";
-const CLEAR_STORE = "/clearStore";
+// redux-actions -> redux-toolkit 으로 변경
 
 const initialState = {
   token: null,
-  users: [],
 };
 
-export const setToken = createAction(SET_TOKEN);
-export const setUsers = createAction(SET_USERS);
-export const clearStore = createAction(CLEAR_STORE);
-
-const userReducer = handleActions(
-  {
-    [SET_TOKEN]: (state, action) => {
-      return { ...state, token: action.payload };
+const user = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    setToken: (state, action) => {
+      state.token = action.payload;
     },
-    [SET_USERS]: (state, action) => {
-      return { ...state, users: action.payload };
-    },
-    [CLEAR_STORE]: () => {
-      console.log("store clear!");
+    clearStore: state => {
       return initialState;
     },
   },
-  initialState
-);
+});
 
+export const { setToken, clearStore } = user.actions;
 export default combineReducers({
-  users: userReducer,
+  user: user.reducer,
 });

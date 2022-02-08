@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const linksRequireLogin = [{ to: "/users", text: "Show Users" }];
@@ -8,12 +8,9 @@ const links = [
   { to: "/register", text: "Register" },
 ];
 
-function mapStateToProp(state) {
-  return { token: state.users.token };
-}
-
-function Links(props) {
-  let navLinks = !props.token ? links : linksRequireLogin;
+export default function Links() {
+  const token = useSelector(state => state.user.token);
+  let navLinks = !token ? links : linksRequireLogin;
 
   return (
     <nav>
@@ -28,5 +25,3 @@ function Links(props) {
     </nav>
   );
 }
-
-export default connect(mapStateToProp, null)(Links);

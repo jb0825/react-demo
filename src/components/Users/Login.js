@@ -1,22 +1,17 @@
 import * as actions from "modules";
 import * as config from "config";
-import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import * as selector from "modules/Selector";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function mapStateToProps(state) {
-  console.log(state);
-  return { token: state.users.token };
-}
-
-function mapDispatchToProps(dispatch) {
-  return { onSetToken: token => dispatch(actions.setToken(token)) };
-}
-
-function Login(props) {
-  const onSetToken = props.onSetToken;
+export default function Login() {
+  const token = useSelector(selector.token);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { setToken } = actions;
+
   const [loginInfo, setLoginInfo] = useState({
     email: "eve.holt@reqres.in",
     password: "cityslicka",
@@ -27,8 +22,7 @@ function Login(props) {
   ];
 
   useEffect(() => {
-    console.log("component rendering");
-    if (props.token) {
+    if (token) {
       alert("already login");
       navigate("/");
     }
@@ -49,7 +43,7 @@ function Login(props) {
       .then(resp => {
         alert("Login Success!");
 
-        onSetToken(resp.data.token);
+        dispatch(setToken(resp.data.token));
         navigate("/");
       })
       .catch(err => {
@@ -87,5 +81,3 @@ function Login(props) {
     </article>
   );
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,22 +1,15 @@
-import * as actions from "modules";
-import { connect } from "react-redux";
-import Navigate from "routes";
-import Links from "routes/Links";
 import State from "./State";
 import "./Block.css";
+import * as actions from "modules";
+import { useDispatch } from "react-redux";
+import Links from "routes/Links";
+import Navigate from "routes";
+import { useNavigate } from "react-router-dom";
 
-function mapStateToProp(state) {
-  return { token: state.token };
-}
+export default function App(props) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-function mapDispatchToProp(dispatch) {
-  return {
-    setToken: token => dispatch(actions.setToken(token)),
-    clear: () => dispatch(actions.clearStore()),
-  };
-}
-
-function App(props) {
   return (
     <>
       <div id="block" />
@@ -25,11 +18,9 @@ function App(props) {
         <Links />
         <Navigate />
         <State />
-        <button onClick={props.clear}>Clear Store</button>
-        <button onClick={() => props.setToken("test")}>Set Token Test</button>
+        <button onClick={() => dispatch(actions.clearStore())}>Clear Store</button>
+        <button onClick={() => dispatch(actions.setToken("test"))}>Set Token Test</button>
       </>
     </>
   );
 }
-
-export default connect(mapStateToProp, mapDispatchToProp)(App);

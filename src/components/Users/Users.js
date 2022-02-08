@@ -2,22 +2,19 @@ import * as config from "config";
 import axios from "axios";
 import "./Users.css";
 import { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function mapStateToProp(state) {
-  return { token: state.users.token };
-}
-
-function Users(props) {
+export default function Users() {
+  const token = useSelector(state => state.user.token);
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   let [page, setPage] = useState(0);
 
   useEffect(() => {
-    if (!props.token) {
+    if (!token) {
       alert("login is required!");
-      navigate("/");
+      navigate("/login");
     } else {
       axios
         .get(`${config.SERVER_URL}/users`)
@@ -93,5 +90,3 @@ function Users(props) {
     </article>
   );
 }
-
-export default connect(mapStateToProp, null)(Users);
