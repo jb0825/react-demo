@@ -1,0 +1,11 @@
+#user-data div {
+  margin-bottom: 50px;
+}
+
+#pagination a {
+  padding: 5px;
+}
+
+#pagination #active {
+  font-weight: bold;
+}

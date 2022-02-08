@@ -1,9 +1,14 @@
 import * as actions from "modules";
 import * as config from "config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+function mapStateToProps(state) {
+  console.log(state);
+  return { token: state.users.token };
+}
 
 function mapDispatchToProps(dispatch) {
   return { onSetToken: token => dispatch(actions.setToken(token)) };
@@ -20,6 +25,14 @@ function Login(props) {
     { type: "text", placeholder: "insert your email", name: "email" },
     { type: "password", placeholder: "insert your password", name: "password" },
   ];
+
+  useEffect(() => {
+    console.log("component rendering");
+    if (props.token) {
+      alert("already login");
+      navigate("/");
+    }
+  }, []);
 
   function handleChange(type, value) {
     let changed = loginInfo;
@@ -75,4 +88,4 @@ function Login(props) {
   );
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
